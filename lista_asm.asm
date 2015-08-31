@@ -22,6 +22,7 @@
 ; YA IMPLEMENTADAS EN C
 	extern palabraIgual
 	extern insertarAtras
+	extern fprintf
 
 ; /** DEFINES **/    >> SE RECOMIENDA COMPLETAR LOS DEFINES CON LOS VALORES CORRECTOS
 	%define NULL 		0
@@ -35,12 +36,11 @@
 	%define OFFSET_SIGUIENTE   	 0
 	%define OFFSET_PALABRA 		 0
 
-
 section .rodata
 
 
 section .data
-
+	imprimirMsg: DB '%s', 10, 0
 
 section .text
 
@@ -107,7 +107,29 @@ section .text
 		ret
 	; void palabraImprimir( char *p, FILE *file );
 	palabraImprimir:
-		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		sub rsp, 8
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+		mov rdx, rdi	; mando la palabra a rdx
+		mov rdi, rsi	; el file lo paso a rdi
+		mov rsi, imprimirMsg
+
+		call fprintf
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		add rsp, 8
+		pop rbp
+		ret
 
 	; char *palabraCopiar( char *p );
 	palabraCopiar:

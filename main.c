@@ -31,5 +31,8 @@ int main (void){
 	printf("la palabra 'hola' formateada con bypass es '%s' \n", p);
 	palabraFormatear(p, upper);
 	printf("la palabra 'hola' formateada con upper es '%s' \n", p);
+
+	//palabraImprimir
+	palabraImprimir("Este es un mensaje impreso", stdout);
 	return 0;
 }
