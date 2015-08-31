@@ -50,7 +50,16 @@ section .text
 
 	; unsigned char palabraLongitud( char *p );
 	palabraLongitud:
-		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		xor rax, rax
+		cmp byte [rdi], NULL
+		je .fin
+		.ciclo	inc al
+				lea rdi, [rdi + 1]
+				cmp byte [rdi], NULL
+				jne .ciclo
+		.fin	pop rbp
+				ret
 
 	; bool palabraMenor( char *p1, char *p2 );
 	palabraMenor:
