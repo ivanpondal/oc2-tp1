@@ -86,8 +86,25 @@ section .text
 
 	; void palabraFormatear( char *p, void (*funcModificarString)(char*) );
 	palabraFormatear:
-		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		sub rsp, 8
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
 
+		call rsi
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		add rsp, 8
+		pop rbp
+		ret
 	; void palabraImprimir( char *p, FILE *file );
 	palabraImprimir:
 		; COMPLETAR AQUI EL CODIGO

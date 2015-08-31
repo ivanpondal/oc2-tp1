@@ -1,6 +1,18 @@
 #include "lista.h"
 #include <stdio.h>
 
+void bypass(char *p){
+	p = p;
+}
+
+void upper(char *p){
+	int i = 0;
+	while(p[i] > 0){
+		p[i] -= p[i] > 96 ? 32 : 0;
+		i++;
+	}
+}
+
 int main (void){
 	// palabraLongitud
 	printf("la longitud de ’hola’ es = %d \n", palabraLongitud("hola"));
@@ -12,5 +24,12 @@ int main (void){
 	printf("la palabra 'cal' < 'casa' = %d \n", palabraMenor("cal", "casa"));
 	printf("la palabra '' < 'a' = %d \n", palabraMenor("", "a"));
 	printf("la palabra '' < '' = %d \n", palabraMenor("", ""));
+
+	//palabraFormatear
+	char p[] = "hola";
+	palabraFormatear(p, bypass);
+	printf("la palabra 'hola' formateada con bypass es '%s' \n", p);
+	palabraFormatear(p, upper);
+	printf("la palabra 'hola' formateada con upper es '%s' \n", p);
 	return 0;
 }
