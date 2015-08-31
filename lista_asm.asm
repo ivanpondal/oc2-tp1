@@ -25,7 +25,7 @@
 
 ; /** DEFINES **/    >> SE RECOMIENDA COMPLETAR LOS DEFINES CON LOS VALORES CORRECTOS
 	%define NULL 		0
-	%define TRUE 		0
+	%define TRUE 		1
 	%define FALSE 		0
 
 	%define LISTA_SIZE 	    	 0
@@ -54,16 +54,35 @@ section .text
 		xor rax, rax
 		cmp byte [rdi], NULL
 		je .fin
-		.ciclo	inc al
-				lea rdi, [rdi + 1]
-				cmp byte [rdi], NULL
-				jne .ciclo
-		.fin	pop rbp
-				ret
+		.ciclo:
+			inc al
+			lea rdi, [rdi + 1]
+			cmp byte [rdi], NULL
+			jne .ciclo
+		.fin:
+			pop rbp
+			ret
 
 	; bool palabraMenor( char *p1, char *p2 );
 	palabraMenor:
-		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		xor rax, rax	; resultado bool
+		xor dl, dl  	; var temp
+
+		.ciclo:
+			mov dl, [rsi]
+			cmp [rdi], dl
+			jl .esMenor	; p1[i] < p2[i]
+			cmp dl, NULL
+			je .fin    	; p1[i] >= p2[i] && p2[i] == NULL
+			lea rdi, [rdi + 1]
+			lea rsi, [rsi + 1]
+			jmp .ciclo
+		.esMenor:
+			inc rax
+		.fin:
+			pop rbp
+			ret
 
 	; void palabraFormatear( char *p, void (*funcModificarString)(char*) );
 	palabraFormatear:
