@@ -348,7 +348,41 @@ section .text
 
 	; float longitudMedia( lista *l );
 	longitudMedia:
-		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		sub rsp, 8
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+		xor r12, r12	; contador total
+		xor r13, r13	; suma total
+		cvtsi2ss xmm0, r12
+		mov rbx, [rdi + OFFSET_PRIMERO]
+		cmp rbx, NULL
+		je .fin
+		.ciclo:
+			mov rdi, [rbx + OFFSET_PALABRA]	; cargo la palabra
+			call palabraLongitud			; calculo su longitud
+			add r13, rax	; la sumo al total
+			inc r12			; sumo el contador de palabras
+			mov rbx, [rbx + OFFSET_SIGUIENTE]
+			cmp rbx, NULL
+			jne .ciclo
+		cvtsi2ss xmm0, r13
+		cvtsi2ss xmm1, r12
+		divss xmm0, xmm1
+		.fin:
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		add rsp, 8
+		pop rbp
+		ret
 
 	; void insertarOrdenado( lista *l, char *palabra, bool (*funcCompararPalabra)(char*,char*) );
 	insertarOrdenado:

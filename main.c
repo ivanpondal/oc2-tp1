@@ -63,8 +63,13 @@ int main (void){
 
 	oracionImprimir(miLista, "/dev/stdout", palabraImprimir);
 
+	// longitudMedia
+	printf("Longitud media 'miLista': %f \n", longitudMedia(miLista));
+	printf("Longitud media 'miListaVacia': %f \n", longitudMedia(miListaVacia));
+
 	// oracionBorrar
 	oracionBorrar(miListaVacia);
 	oracionBorrar(miLista);
+
 	return 0;
 }
