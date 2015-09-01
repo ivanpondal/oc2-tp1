@@ -66,8 +66,8 @@ section .text
 			cmp byte [rdi], NULL
 			jne .ciclo
 		.fin:
-			pop rbp
-			ret
+		pop rbp
+		ret
 
 	; bool palabraMenor( char *p1, char *p2 );
 	palabraMenor:
@@ -85,43 +85,23 @@ section .text
 			lea rsi, [rsi + 1]
 			jmp .ciclo
 		.esMenor:
-			inc rax
+		inc rax
 		.fin:
-			pop rbp
-			ret
+		pop rbp
+		ret
 
 	; void palabraFormatear( char *p, void (*funcModificarString)(char*) );
 	palabraFormatear:
 		push rbp
-		mov rbp, rsp
-		sub rsp, 8
-		push rbx
-		push r12
-		push r13
-		push r14
-		push r15
 
 		call rsi
 
-		pop r15
-		pop r14
-		pop r13
-		pop r12
-		pop rbx
-		add rsp, 8
 		pop rbp
 		ret
 
 	; void palabraImprimir( char *p, FILE *file );
 	palabraImprimir:
 		push rbp
-		mov rbp, rsp
-		sub rsp, 8
-		push rbx
-		push r12
-		push r13
-		push r14
-		push r15
 
 		mov rdx, rdi	; mando la palabra a rdx
 		mov rdi, rsi	; el file lo paso a rdi
@@ -129,12 +109,6 @@ section .text
 
 		call fprintf
 
-		pop r15
-		pop r14
-		pop r13
-		pop r12
-		pop rbx
-		add rsp, 8
 		pop rbp
 		ret
 
@@ -142,12 +116,8 @@ section .text
 	palabraCopiar:
 		push rbp
 		mov rbp, rsp
-		sub rsp, 8
 		push rbx
 		push r12
-		push r13
-		push r14
-		push r15
 
 		mov rbx, rdi	; guardo la palabra original
 		xor rax, rax
@@ -164,12 +134,8 @@ section .text
 			mov [rax + rcx - 1], dil
 			loop .ciclo
 
-		pop r15
-		pop r14
-		pop r13
 		pop r12
 		pop rbx
-		add rsp, 8
 		pop rbp
 		ret
 
@@ -182,10 +148,6 @@ section .text
 		mov rbp, rsp
 		sub rsp, 8
 		push rbx
-		push r12
-		push r13
-		push r14
-		push r15
 
 		mov rbx, rdi
 		mov rdi, NODO_SIZE
@@ -195,10 +157,6 @@ section .text
 		mov qword [rax + OFFSET_SIGUIENTE], NULL
 		mov [rax + OFFSET_PALABRA], rbx
 
-		pop r15
-		pop r14
-		pop r13
-		pop r12
 		pop rbx
 		add rsp, 8
 		pop rbp
@@ -210,10 +168,6 @@ section .text
 		mov rbp, rsp
 		sub rsp, 8
 		push rbx
-		push r12
-		push r13
-		push r14
-		push r15
 
 		mov rbx, rdi
 
@@ -223,10 +177,6 @@ section .text
 		mov rdi, rbx
 		call free
 
-		pop r15
-		pop r14
-		pop r13
-		pop r12
 		pop rbx
 		add rsp, 8
 		pop rbp
@@ -235,13 +185,6 @@ section .text
 	; lista *oracionCrear( void );
 	oracionCrear:
 		push rbp
-		mov rbp, rsp
-		sub rsp, 8
-		push rbx
-		push r12
-		push r13
-		push r14
-		push r15
 
 		mov rdi, LISTA_SIZE
 
@@ -249,12 +192,6 @@ section .text
 
 		mov qword [rax + OFFSET_PRIMERO], NULL
 
-		pop r15
-		pop r14
-		pop r13
-		pop r12
-		pop rbx
-		add rsp, 8
 		pop rbp
 		ret
 
@@ -262,12 +199,8 @@ section .text
 	oracionBorrar:
 		push rbp
 		mov rbp, rsp
-		sub rsp, 8
 		push rbx
 		push r12
-		push r13
-		push r14
-		push r15
 
 		mov rbx, rdi
 		cmp qword [rbx + OFFSET_PRIMERO], NULL
@@ -284,12 +217,8 @@ section .text
 
 		call free
 
-		pop r15
-		pop r14
-		pop r13
 		pop r12
 		pop rbx
-		add rsp, 8
 		pop rbp
 		ret
 
@@ -297,12 +226,10 @@ section .text
 	oracionImprimir:
 		push rbp
 		mov rbp, rsp
-		sub rsp, 8
 		push rbx
 		push r12
 		push r13
 		push r14
-		push r15
 
 		mov rbx, rdi	; muevo lista a reg seguro
 		mov r12, rdx	; muevo funcion imprimir a reg seguro
@@ -334,12 +261,10 @@ section .text
 		mov rdi, r13
 		call fclose
 
-		pop r15
 		pop r14
 		pop r13
 		pop r12
 		pop rbx
-		add rsp, 8
 		pop rbp
 		ret
 
@@ -354,8 +279,6 @@ section .text
 		push rbx
 		push r12
 		push r13
-		push r14
-		push r15
 
 		xor r12, r12	; contador total
 		xor r13, r13	; suma total
@@ -375,8 +298,7 @@ section .text
 		cvtsi2ss xmm1, r12
 		divss xmm0, xmm1
 		.fin:
-		pop r15
-		pop r14
+
 		pop r13
 		pop r12
 		pop rbx

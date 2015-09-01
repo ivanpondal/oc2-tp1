@@ -62,6 +62,7 @@ int main (void){
 	miLista->primero->siguiente = nodoCrear(palabraCopiar("segundoNodo"));
 
 	oracionImprimir(miLista, "/dev/stdout", palabraImprimir);
+	oracionImprimir(miListaVacia, "/dev/stdout", palabraImprimir);
 
 	// longitudMedia
 	printf("Longitud media 'miLista': %f \n", longitudMedia(miLista));
