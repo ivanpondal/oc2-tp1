@@ -47,5 +47,11 @@ int main (void){
 	free(otraPalabra);
 	free(palabraVacia);
 
+	// nodoCrear
+	nodo *miNodo = nodoCrear(palabraCopiar("palabraNodo"));
+	palabraImprimir(miNodo->palabra, stdout);
+
+	// nodoBorrar
+	nodoBorrar(miNodo);
 	return 0;
 }

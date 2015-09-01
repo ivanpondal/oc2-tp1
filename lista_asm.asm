@@ -24,18 +24,19 @@
 	extern insertarAtras
 	extern fprintf
 	extern malloc
+	extern free
 
 ; /** DEFINES **/    >> SE RECOMIENDA COMPLETAR LOS DEFINES CON LOS VALORES CORRECTOS
 	%define NULL 		0
 	%define TRUE 		1
 	%define FALSE 		0
 
-	%define LISTA_SIZE 	    	 0
+	%define LISTA_SIZE 	    	 8
 	%define OFFSET_PRIMERO 		 0
 
-	%define NODO_SIZE     		 0
+	%define NODO_SIZE     		 16
 	%define OFFSET_SIGUIENTE   	 0
-	%define OFFSET_PALABRA 		 0
+	%define OFFSET_PALABRA 		 8
 
 section .rodata
 
@@ -173,11 +174,59 @@ section .text
 
 	; nodo *nodoCrear( char *palabra );
 	nodoCrear:
-		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		sub rsp, 8
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+		mov rbx, rdi
+		mov rdi, NODO_SIZE
+
+		call malloc
+
+		mov qword [rax + OFFSET_SIGUIENTE], NULL
+		mov [rax + OFFSET_PALABRA], rbx
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		add rsp, 8
+		pop rbp
+		ret
 
 	; void nodoBorrar( nodo *n );
 	nodoBorrar:
-		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		sub rsp, 8
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+		mov rbx, rdi
+
+		mov qword rdi, [rbx + OFFSET_PALABRA]
+		call free
+
+		mov rdi, rbx
+		call free
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		add rsp, 8
+		pop rbp
+		ret
 
 	; lista *oracionCrear( void );
 	oracionCrear:
