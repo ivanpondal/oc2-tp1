@@ -22,6 +22,8 @@
 ; YA IMPLEMENTADAS EN C
 	extern palabraIgual
 	extern insertarAtras
+	extern fopen
+	extern fclose
 	extern fprintf
 	extern malloc
 	extern free
@@ -43,6 +45,8 @@ section .rodata
 
 section .data
 	imprimirMsg: DB '%s', 10, 0
+	modoAppend: DB 'a', 0
+	oracionVaciaMsg: DB '<oracionVacia>', 10, 0
 
 section .text
 
@@ -230,16 +234,114 @@ section .text
 
 	; lista *oracionCrear( void );
 	oracionCrear:
-		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		sub rsp, 8
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+		mov rdi, LISTA_SIZE
+
+		call malloc
+
+		mov qword [rax + OFFSET_PRIMERO], NULL
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		add rsp, 8
+		pop rbp
+		ret
 
 	; void oracionBorrar( lista *l );
 	oracionBorrar:
-		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		sub rsp, 8
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+		mov rbx, rdi
+		cmp qword [rbx + OFFSET_PRIMERO], NULL
+		je .fin
+		mov rdi, [rbx + OFFSET_PRIMERO]
+		.ciclo:
+			mov r12, [rdi + OFFSET_SIGUIENTE]
+			call nodoBorrar
+			mov rdi, r12
+			cmp rdi, NULL
+			jne .ciclo
+		.fin:
+		mov rdi, rbx
+
+		call free
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		add rsp, 8
+		pop rbp
+		ret
 
 	; void oracionImprimir( lista *l, char *archivo, void (*funcImprimirPalabra)(char*,FILE*) );
 	oracionImprimir:
-		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		sub rsp, 8
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
 
+		mov rbx, rdi	; muevo lista a reg seguro
+		mov r12, rdx	; muevo funcion imprimir a reg seguro
+		mov rdi, rsi	; paso el archivo como primer parametro
+		mov rsi, modoAppend
+
+		call fopen		; en rax deja el puntero a FILE
+		mov r13, rax	; muevo *FILE a reg seguro
+
+		mov r14, [rbx + OFFSET_PRIMERO]
+		cmp r14, NULL
+		je .oracionVacia
+
+		.ciclo:
+			mov rdi, [r14 + OFFSET_PALABRA]
+			mov rsi, r13
+			call r12
+			mov r14, [r14 + OFFSET_SIGUIENTE]
+			cmp r14, NULL
+			je .fin
+			jmp .ciclo
+
+		.oracionVacia:
+		mov rdi, oracionVaciaMsg
+		mov rsi, r13
+
+		call r12
+		.fin:
+		mov rdi, r13
+		call fclose
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		add rsp, 8
+		pop rbp
+		ret
 
 ;/** FUNCIONES AVANZADAS **/
 ;-----------------------------------------------------------

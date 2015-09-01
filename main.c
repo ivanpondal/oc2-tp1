@@ -53,5 +53,18 @@ int main (void){
 
 	// nodoBorrar
 	nodoBorrar(miNodo);
+
+	// oracionCrear
+	lista *miListaVacia = oracionCrear();
+	lista *miLista = oracionCrear();
+
+	miLista->primero = nodoCrear(palabraCopiar("primerNodo"));
+	miLista->primero->siguiente = nodoCrear(palabraCopiar("segundoNodo"));
+
+	oracionImprimir(miLista, "/dev/stdout", palabraImprimir);
+
+	// oracionBorrar
+	oracionBorrar(miListaVacia);
+	oracionBorrar(miLista);
 	return 0;
 }
