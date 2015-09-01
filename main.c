@@ -25,14 +25,27 @@ int main (void){
 	printf("la palabra '' < 'a' = %d \n", palabraMenor("", "a"));
 	printf("la palabra '' < '' = %d \n", palabraMenor("", ""));
 
-	//palabraFormatear
+	// palabraFormatear
 	char p[] = "hola";
 	palabraFormatear(p, bypass);
 	printf("la palabra 'hola' formateada con bypass es '%s' \n", p);
 	palabraFormatear(p, upper);
 	printf("la palabra 'hola' formateada con upper es '%s' \n", p);
 
-	//palabraImprimir
+	// palabraImprimir
 	palabraImprimir("Este es un mensaje impreso", stdout);
+
+	// palabraCopiar
+	char *unaPalabra = palabraCopiar("palabraCopiada");
+	char *otraPalabra = palabraCopiar(unaPalabra);
+	char *palabraVacia = palabraCopiar("");
+	unaPalabra[1] = '@';
+	palabraImprimir(unaPalabra, stdout);
+	palabraImprimir(otraPalabra, stdout);
+	palabraImprimir(palabraVacia, stdout);
+	free(unaPalabra);
+	free(otraPalabra);
+	free(palabraVacia);
+
 	return 0;
 }

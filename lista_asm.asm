@@ -23,6 +23,7 @@
 	extern palabraIgual
 	extern insertarAtras
 	extern fprintf
+	extern malloc
 
 ; /** DEFINES **/    >> SE RECOMIENDA COMPLETAR LOS DEFINES CON LOS VALORES CORRECTOS
 	%define NULL 		0
@@ -105,6 +106,7 @@ section .text
 		add rsp, 8
 		pop rbp
 		ret
+
 	; void palabraImprimir( char *p, FILE *file );
 	palabraImprimir:
 		push rbp
@@ -133,8 +135,38 @@ section .text
 
 	; char *palabraCopiar( char *p );
 	palabraCopiar:
-		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		sub rsp, 8
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
 
+		mov rbx, rdi	; guardo la palabra original
+		xor rax, rax
+		call palabraLongitud
+		inc rax			; incremento en uno para poder guardar el caracter de fin
+		mov r12, rax	; guardo resultado para no perderlo
+		mov rdi, rax
+
+		call malloc
+
+		mov rcx, r12
+		.ciclo:
+			mov dil, [rbx + rcx - 1]
+			mov [rax + rcx - 1], dil
+			loop .ciclo
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		add rsp, 8
+		pop rbp
+		ret
 
 ;/** FUNCIONES DE LISTA Y NODO **/
 ;-----------------------------------------------------------
