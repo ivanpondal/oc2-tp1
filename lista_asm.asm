@@ -46,7 +46,8 @@ section .rodata
 section .data
 	imprimirMsg: DB '%s', 10, 0
 	modoAppend: DB 'a', 0
-	oracionVaciaMsg: DB '<oracionVacia>', 10, 0
+	oracionVaciaMsg: DB '<oracionVacia>', 0
+	diabolicoVacioMsg: DB '<sinMensajeDiabolico>', 0
 
 section .text
 
@@ -411,4 +412,62 @@ section .text
 
 	; void descifrarMensajeDiabolico( lista *l, char *archivo, void (*funcImpPbr)(char*,FILE* ) );
 	descifrarMensajeDiabolico:
-		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		sub rsp, 8
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+		mov rbx, rdi	; guardo lista
+		mov rdi, rsi	; guardo archivo
+		mov r13, rdx	; guardo funcion imprimir
+		xor r12, r12
+
+		mov rsi, modoAppend
+
+		call fopen		; en rax deja el puntero a FILE
+		mov r14, rax	; muevo *FILE a reg seguro
+
+		mov r15, [rbx + OFFSET_PRIMERO]
+		cmp r15, NULL
+		je .mensajeVacio
+		.cicloApilar:
+			inc r12
+			push qword [r15 + OFFSET_PALABRA]
+			sub rsp, 8	; mantengo la pila alineada
+			mov r15, [r15 + OFFSET_SIGUIENTE]
+			cmp r15, NULL
+			je .cicloImprimir
+			jmp .cicloApilar
+
+		.cicloImprimir:
+			add rsp, 8
+			pop r15
+			mov rdi, r15
+			mov rsi, r14
+			call r13
+			dec r12
+			cmp r12, 0
+			je .fin
+			jmp .cicloImprimir
+
+		.mensajeVacio:
+		mov rdi, diabolicoVacioMsg
+		mov rsi, r14
+
+		call r13
+		.fin:
+		mov rdi, r14
+		call fclose
+
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		add rsp, 8
+		pop rbp
+		ret

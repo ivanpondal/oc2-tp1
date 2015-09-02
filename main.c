@@ -105,5 +105,22 @@ int main (void){
 	oracionImprimir(listaAFiltrar, "/dev/stdout", palabraImprimir);
 
 	oracionBorrar(listaAFiltrar);
+
+	lista *listaARevertir = oracionCrear();
+	insertarOrdenado(listaARevertir, palabraCopiar("arbol"), palabraMenor);
+	insertarOrdenado(listaARevertir, palabraCopiar("aguja"), palabraMenor);
+	insertarOrdenado(listaARevertir, palabraCopiar("gaviota"), palabraMenor);
+	insertarOrdenado(listaARevertir, palabraCopiar("bisonte"), palabraMenor);
+
+	printf("Lista a revertir:\n");
+	oracionImprimir(listaARevertir, "/dev/stdout", palabraImprimir);
+	printf("Lista revertida:\n");
+	descifrarMensajeDiabolico(listaARevertir, "/dev/stdout", palabraImprimir);
+	oracionBorrar(listaARevertir);
+
+	lista *listaARevertirVacia = oracionCrear();
+	printf("Lista vacía revertida:\n");
+	descifrarMensajeDiabolico(listaARevertirVacia, "/dev/stdout", palabraImprimir);
+	oracionBorrar(listaARevertirVacia);
 	return 0;
 }
