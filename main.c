@@ -79,7 +79,31 @@ int main (void){
 	insertarOrdenado(listaOrdenada, palabraCopiar("barco"), palabraMenor);
 	insertarOrdenado(listaOrdenada, palabraCopiar("carro"), palabraMenor);
 
+	printf("Lista insertada ordenado:\n");
 	oracionImprimir(listaOrdenada, "/dev/stdout", palabraImprimir);
 	oracionBorrar(listaOrdenada);
+
+	// filtrarPalabra
+	lista *listaAFiltrar = oracionCrear();
+	insertarOrdenado(listaAFiltrar, palabraCopiar("arbol"), palabraMenor);
+	insertarOrdenado(listaAFiltrar, palabraCopiar("aguja"), palabraMenor);
+	insertarOrdenado(listaAFiltrar, palabraCopiar("gaviota"), palabraMenor);
+	insertarOrdenado(listaAFiltrar, palabraCopiar("bisonte"), palabraMenor);
+	printf("Lista a filtrar:\n");
+	oracionImprimir(listaAFiltrar, "/dev/stdout", palabraImprimir);
+
+	printf("Lista filtrada por 'canasto':\n");
+	filtrarPalabra(listaAFiltrar, palabraMenor, "canasto");
+	oracionImprimir(listaAFiltrar, "/dev/stdout", palabraImprimir);
+
+	printf("Lista filtrada por 'arbol':\n");
+	filtrarPalabra(listaAFiltrar, palabraMenor, "arbol");
+	oracionImprimir(listaAFiltrar, "/dev/stdout", palabraImprimir);
+
+	printf("Lista filtrada por 'aguja':\n");
+	filtrarPalabra(listaAFiltrar, palabraMenor, "aguja");
+	oracionImprimir(listaAFiltrar, "/dev/stdout", palabraImprimir);
+
+	oracionBorrar(listaAFiltrar);
 	return 0;
 }

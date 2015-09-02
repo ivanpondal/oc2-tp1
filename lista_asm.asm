@@ -337,29 +337,77 @@ section .text
 		.esMenor:
 		mov rdi, r12
 		call nodoCrear
-	mov [rax + OFFSET_SIGUIENTE], r15
-	cmp r14, NULL
-	je .insertarAdelante
-	mov [r14 + OFFSET_SIGUIENTE], rax
-	jmp .fin
-	.insertarAdelante:
-	mov [rbx + OFFSET_PRIMERO], rax
-	jmp .fin
+		mov [rax + OFFSET_SIGUIENTE], r15
+		cmp r14, NULL
+		je .insertarAdelante
+		mov [r14 + OFFSET_SIGUIENTE], rax
+		jmp .fin
+		.insertarAdelante:
+		mov [rbx + OFFSET_PRIMERO], rax
+		jmp .fin
 
-	.insertarAtras:
-	mov rdi, rbx
-	mov rsi, r12
-	call insertarAtras
-	.fin:
-	pop r13
-	pop r12
-	pop rbx
-	pop rbp
-	ret
+		.insertarAtras:
+		mov rdi, rbx
+		mov rsi, r12
+		call insertarAtras
+		.fin:
+		pop r13
+		pop r12
+		pop rbx
+		pop rbp
+		ret
 
 	; void filtrarAltaLista( lista *l, bool (*funcCompararPalabra)(char*,char*), char *palabraCmp );
 	filtrarPalabra:
-		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		sub rsp, 8
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+
+		mov rbx, rdi	; lista
+		mov r12, rsi	; funcion comparar
+		mov r13, rdx	; palabra comparar
+
+		xor r14, r14	; nodo anterior
+		mov r15, [rbx + OFFSET_PRIMERO]
+		cmp r15, NULL
+		je .fin
+		.ciclo:
+			mov rdi, [r15 + OFFSET_PALABRA]
+			mov rsi, r13
+			call r12
+			mov rdi, r15	; nodo actual
+			mov r15, [r15 + OFFSET_SIGUIENTE]	; actualizo actual
+			cmp rax, TRUE
+			je .actualizarAnterior
+			.borrarNodo:
+			call nodoBorrar	; borro el nodo actual
+			cmp r14, NULL	; si el anterior es NULL, era el primero
+			je .borrarPrimero
+			mov [r14 + OFFSET_SIGUIENTE], r15
+			jmp .siguienteNodo
+			.borrarPrimero:
+			mov [rbx + OFFSET_PRIMERO], r15
+			jmp .siguienteNodo
+			.actualizarAnterior:
+			mov r14, rdi	; actualizo anterior
+			.siguienteNodo:
+			cmp r15, NULL
+			je .fin
+			jmp .ciclo
+		.fin:
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		add rsp, 8
+		pop rbp
+		ret
 
 	; void descifrarMensajeDiabolico( lista *l, char *archivo, void (*funcImpPbr)(char*,FILE* ) );
 	descifrarMensajeDiabolico:
