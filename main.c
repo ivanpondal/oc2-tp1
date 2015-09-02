@@ -72,5 +72,14 @@ int main (void){
 	oracionBorrar(miListaVacia);
 	oracionBorrar(miLista);
 
+	// insertarOrdenado
+	lista *listaOrdenada = oracionCrear();
+	insertarOrdenado(listaOrdenada, palabraCopiar("arbol"), palabraMenor);
+	insertarOrdenado(listaOrdenada, palabraCopiar("abaco"), palabraMenor);
+	insertarOrdenado(listaOrdenada, palabraCopiar("barco"), palabraMenor);
+	insertarOrdenado(listaOrdenada, palabraCopiar("carro"), palabraMenor);
+
+	oracionImprimir(listaOrdenada, "/dev/stdout", palabraImprimir);
+	oracionBorrar(listaOrdenada);
 	return 0;
 }

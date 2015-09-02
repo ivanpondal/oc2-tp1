@@ -78,7 +78,8 @@ section .text
 		.ciclo:
 			mov dl, [rsi]
 			cmp [rdi], dl
-			jl .esMenor	; p1[i] < p2[i]
+			jb .esMenor	; p1[i] < p2[i]
+			ja .fin		; p1[i] > p2[i]
 			cmp dl, NULL
 			je .fin    	; p1[i] >= p2[i] && p2[i] == NULL
 			lea rdi, [rdi + 1]
@@ -204,10 +205,10 @@ section .text
 
 		mov rbx, rdi
 		cmp qword [rbx + OFFSET_PRIMERO], NULL
-		je .fin
-		mov rdi, [rbx + OFFSET_PRIMERO]
+		je .fin	; si la lista esta vacía no hay nodos que borrar
+		mov rdi, [rbx + OFFSET_PRIMERO]	; cargo el primer nodo en rdi
 		.ciclo:
-			mov r12, [rdi + OFFSET_SIGUIENTE]
+			mov r12, [rdi + OFFSET_SIGUIENTE] ; me guardo el siguiente
 			call nodoBorrar
 			mov rdi, r12
 			cmp rdi, NULL
@@ -308,7 +309,53 @@ section .text
 
 	; void insertarOrdenado( lista *l, char *palabra, bool (*funcCompararPalabra)(char*,char*) );
 	insertarOrdenado:
-		; COMPLETAR AQUI EL CODIGO
+		push rbp
+		mov rbp, rsp
+		push rbx
+		push r12
+		push r13
+
+		mov rbx, rdi	; lista
+		mov r12, rsi	; palabra
+		mov r13, rdx	; funcion comparar
+		mov r14, NULL	; anterior
+
+		mov r15, [rbx + OFFSET_PRIMERO]
+		cmp r15, NULL
+		je .insertarAtras
+		.ciclo:
+			mov rdi, r12
+			mov rsi, [r15 + OFFSET_PALABRA]
+			call palabraMenor
+			cmp rax, TRUE
+			je .esMenor
+			mov r14, r15
+			mov r15, [r15 + OFFSET_SIGUIENTE]
+			cmp r15, NULL
+			je .insertarAtras
+			jmp .ciclo
+		.esMenor:
+		mov rdi, r12
+		call nodoCrear
+	mov [rax + OFFSET_SIGUIENTE], r15
+	cmp r14, NULL
+	je .insertarAdelante
+	mov [r14 + OFFSET_SIGUIENTE], rax
+	jmp .fin
+	.insertarAdelante:
+	mov [rbx + OFFSET_PRIMERO], rax
+	jmp .fin
+
+	.insertarAtras:
+	mov rdi, rbx
+	mov rsi, r12
+	call insertarAtras
+	.fin:
+	pop r13
+	pop r12
+	pop rbx
+	pop rbp
+	ret
 
 	; void filtrarAltaLista( lista *l, bool (*funcCompararPalabra)(char*,char*), char *palabraCmp );
 	filtrarPalabra:
