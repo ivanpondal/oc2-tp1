@@ -437,22 +437,26 @@ section .text
 		.cicloApilar:
 			inc r12
 			push qword [r15 + OFFSET_PALABRA]
-			sub rsp, 8	; mantengo la pila alineada
 			mov r15, [r15 + OFFSET_SIGUIENTE]
 			cmp r15, NULL
-			je .cicloImprimir
-			jmp .cicloApilar
+			jne .cicloApilar
+		xor rbx, rbx
+		bt r12, 0	; quiero ver si es par o impar
+		jnc .cicloImprimir
+		sub rsp, 8
+		inc rbx
 
 		.cicloImprimir:
-			add rsp, 8
-			pop r15
-			mov rdi, r15
+			mov rdi, [rsp + rbx*8 + 8]
 			mov rsi, r14
 			call r13
+			inc rbx
 			dec r12
 			cmp r12, 0
-			je .fin
-			jmp .cicloImprimir
+			jne .cicloImprimir
+		.desapilar:
+		add rsp, rbx*8
+		jmp .fin
 
 		.mensajeVacio:
 		mov rdi, diabolicoVacioMsg
