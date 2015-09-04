@@ -434,25 +434,33 @@ section .text
 		mov r15, [rbx + OFFSET_PRIMERO]
 		cmp r15, NULL
 		je .mensajeVacio
-		.cicloApilar:
+		.apilar:
 			inc r12
 			push qword [r15 + OFFSET_PALABRA]
-			sub rsp, 8	; mantengo la pila alineada
 			mov r15, [r15 + OFFSET_SIGUIENTE]
 			cmp r15, NULL
-			je .cicloImprimir
-			jmp .cicloApilar
+			jne .apilar
+		xor rbx, rbx	; voy usar rbx como contador creciente
+		bt r12, 0		; quiero ver si es par o impar #palabras
+		jnc .imprimir
+		sub rsp, 8		; si es impar, alineamos la pila
+		inc rbx
 
-		.cicloImprimir:
-			add rsp, 8
-			pop r15
-			mov rdi, r15
+		.imprimir:
+			mov rdi, [rsp + rbx*8]
 			mov rsi, r14
 			call r13
+			inc rbx
 			dec r12
 			cmp r12, 0
-			je .fin
-			jmp .cicloImprimir
+			jne .imprimir
+		.desapilar:
+		xor rax, rax
+		mov al, bl
+		mov bl, 8
+		mul bl
+		add rsp, rax
+		jmp .fin
 
 		.mensajeVacio:
 		mov rdi, diabolicoVacioMsg

@@ -122,5 +122,17 @@ int main (void){
 	printf("Lista vacía revertida:\n");
 	descifrarMensajeDiabolico(listaARevertirVacia, "/dev/stdout", palabraImprimir);
 	oracionBorrar(listaARevertirVacia);
+
+	lista *listaImpar = oracionCrear();
+	printf("Lista impar a revertir:\n");
+	insertarOrdenado(listaImpar, palabraCopiar("impar"), palabraMenor);
+	insertarOrdenado(listaImpar, palabraCopiar("par"), palabraMenor);
+	insertarOrdenado(listaImpar, palabraCopiar("impar"), palabraMenor);
+	oracionImprimir(listaImpar, "/dev/stdout", palabraImprimir);
+	printf("Lista impar revertida:\n");
+
+	descifrarMensajeDiabolico(listaImpar, "/dev/stdout", palabraImprimir);
+	oracionBorrar(listaImpar);
+
 	return 0;
 }
